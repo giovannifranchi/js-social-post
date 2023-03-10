@@ -17,43 +17,6 @@ function getFirstTwoLetters(str){
     return str.split(' ').map(element => element[0].toUpperCase()).join('');
 }
 
-class Posts {
-  constructor(name, id, likeBtn, counter) {
-    this.author = {
-      name,
-      imgProfile: `https://unsplash.it/300/300?image=${createRndNum(1, 1000) + id * 6}`,
-      id,
-    };
-    this.date = getRandomDate();
-    this.postPic = `https://unsplash.it/600/300?image=${createRndNum(1, 1000) + id * 6}`
-    this.postText ="Lorem ipsum dolor sit amet consectetur adipisicing elit. Non mollitia laborum quidem laudantium est totam reiciendis ex corrupti facere unde, expedita doloribus maxime vel officia ratione! Recusandae quisquam totam unde.";
-    this.likes = createRndNum(0, 100),
-    this.likeBtn = likeBtn,
-    this.counter = counter,
-    this.isBtnActive = false;
-  }
-  buttonActivity(){
-      this.likeBtn.addEventListener('click', ()=>{
-          if(this.isBtnActive === false){
-              this.isBtnActive = true;
-              this.likeBtn.style.color = 'red';
-              this.likes += 1;
-              this.counter.innerText = this.likes;
-          }else{
-            this.isBtnActive = false;
-            this.likeBtn.style.color = 'black';
-            this.likes -= 1;
-            this.counter.innerText = this.likes;
-          }
-      });
-  }
-}
-
-const listOfUsers = ['Giovanni Franchi', 'Bob Dylan', 'Elvis Presley', 'John Lennon', 'David Bowie', 'Leonardo Di Caprio'];
-const container = document.getElementById('container');
-const template = document.getElementById('template-post');
-const listOfObjUsers = listOfUsers.map((element, index)=> new Posts(element, index, undefined, undefined));
-
 function createPostElement(arrayofObj, container, template){
     const fragment = document.createDocumentFragment();
     arrayofObj.forEach(element =>{
@@ -76,32 +39,65 @@ function createPostElement(arrayofObj, container, template){
         element.likeBtn = likeBtn;
         counter.innerText = element.likes;
         element.buttonActivity();
+        likeBtn.addEventListener('click', ()=>{
+            if(!element.arrayOflikedObj.includes(element)){
+                element.arrayOflikedObj.push(element);
+                console.log(element.arrayOflikedObj);
+            }else{
+                element.arrayOflikedObj = element.arrayOflikedObj.filter(liked => liked !== element);
+                console.log(element.arrayOflikedObj);
+            }
+        })
         fragment.append(newTemplate);
     })
     container.append(fragment);
 }
+class Posts {
+    constructor(name, id, likeBtn, counter, arrayOflikedObj) {
+      this.author = {
+        name,
+        imgProfile: `https://unsplash.it/300/300?image=${createRndNum(1, 1000) + id * 6}`,
+        id,
+      };
+      this.date = getRandomDate();
+      this.postPic = `https://unsplash.it/600/300?image=${createRndNum(1, 1000) + id * 6}`
+      this.postText ="Lorem ipsum dolor sit amet consectetur adipisicing elit. Non mollitia laborum quidem laudantium est totam reiciendis ex corrupti facere unde, expedita doloribus maxime vel officia ratione! Recusandae quisquam totam unde.";
+      this.likes = createRndNum(0, 100),
+      this.likeBtn = likeBtn,
+      this.counter = counter,
+      this.arrayOflikedObj = arrayOflikedObj;
+      this.isBtnActive = false;
+    }
+    buttonActivity(){
+        this.likeBtn.addEventListener('click', ()=>{
+            if(this.isBtnActive === false){
+                this.isBtnActive = true;
+                this.likeBtn.style.color = 'red';
+                this.likes += 1;
+                this.counter.innerText = this.likes;
+            }else{
+                this.isBtnActive = false;
+                this.likeBtn.style.color = 'black';
+                this.likes -= 1;
+                this.counter.innerText = this.likes;
+            }
+        });
+    }
+}
+
+const listOfUsers = ['Giovanni Franchi', 'Bob Dylan', 'Elvis Presley', 'John Lennon', 'David Bowie', 'Leonardo Di Caprio'];
+const container = document.getElementById('container');
+const template = document.getElementById('template-post');
+let arrayOfliked = [];
+const listOfObjUsers = listOfUsers.map((element, index)=> new Posts(element, index, undefined, undefined, arrayOfliked));
+
 
 createPostElement(listOfObjUsers, container, template);
 
+console.log(arrayOfliked);
 
-// const posts = document.querySelectorAll('.post');
-
-// posts.forEach(element =>{
-//     const counter = element.querySelector('.js-likes-counter');
-//     const likeBtn = element.querySelector('.js-like-button');
-//     let active = false;
-//     likeBtn.addEventListener('click', ()=>{
-//         if(!active){
-//             active = true;
-//             likeBtn.style.color = 'red';
-//             counter.innerText = Number(counter.innerText) + 1;
-//         }else {
-//             active = false;
-//             likeBtn.style.color = 'black';
-//             counter.innerText = Number(counter.innerText) - 1;
-//         }
-//     })
-// })
+//Aggiungi funzione che se likes sono 0 mette zero persone e se una a 1 persona
+//Aggiungi funzione che pusha in array persone che ci sono piaciute
 
 
 
