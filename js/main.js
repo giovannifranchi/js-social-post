@@ -12,7 +12,7 @@ function getRandomDate() {
 }
 
 function getFirstToLetters(str){
-    return str.split(' ').map(element => element[0].toUpperCase()).join(' ');
+    return str.split(' ').map(element => element[0].toUpperCase()).join('');
 }
 
 class Posts {
@@ -64,34 +64,28 @@ function createPostElement(arrayofObj, container, template){
 
 createPostElement(listOfObjUsers, container, template);
 
-console.log(listOfObjUsers);
-
 
 const posts = document.querySelectorAll('.post');
 
-// posts.forEach(element =>{
-//     // const counter = element.querySelector('.likes__cta');
-//     const likeBtn = element.querySelector('.likes__cta .like-button');
-//     console.log(like)
-//     let active = false;
-//     element.addEventListener('click', ()=>{
-//         if(!active){
-//             active = true;
-//             likeBtn.style.color = 'red';
-//             // counter.innerText = Number(counter.innerText) + Number(counter.innerText);
-//         }else {
-//             active = false;
-//             likeBtn.style.color = 'black';
-//             // counter.innerText = Number(counter.innerText) - Number(counter.innerText)
-//         }
-//     })
-// })
+posts.forEach(element =>{
+    const counter = element.querySelector('.js-likes-counter');
+    const likeBtn = element.querySelector('.js-like-button');
+    let active = false;
+    likeBtn.addEventListener('click', ()=>{
+        if(!active){
+            active = true;
+            likeBtn.style.color = 'red';
+            counter.innerText = Number(counter.innerText) + 1;
+        }else {
+            active = false;
+            likeBtn.style.color = 'black';
+            counter.innerText = Number(counter.innerText) - 1;
+        }
+    })
+})
 
 
 
-
-let a = getFirstToLetters('giovanni franchi');
-console.log(a);
 
 
 
