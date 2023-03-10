@@ -11,15 +11,19 @@ function getRandomDate() {
   return format;
 }
 
+function getFirstToLetters(str){
+    return str.split(' ').map(element => element[0].toUpperCase()).join(' ');
+}
+
 class Posts {
   constructor(name, id, likeBtn) {
     this.author = {
       name,
-      imgProfile: `https://unsplash.it/300/300?image=15`,
+      imgProfile: `https://unsplash.it/300/300?image=${createRndNum(1, 1000) + id * 6}`,
       id,
     };
     this.date = getRandomDate();
-    this.postPic = `https://unsplash.it/600/300?image=171`
+    this.postPic = `https://unsplash.it/600/300?image=${createRndNum(1, 1000) + id * 6}`
     this.postText ="Lorem ipsum dolor sit amet consectetur adipisicing elit. Non mollitia laborum quidem laudantium est totam reiciendis ex corrupti facere unde, expedita doloribus maxime vel officia ratione! Recusandae quisquam totam unde.";
     this.likes = createRndNum(0, 100),
     this.likeBtn = likeBtn,
@@ -30,7 +34,7 @@ class Posts {
 const listOfUsers = ['Giovanni Franchi', 'Bob Dylan', 'Elvis Presley', 'John Lennon', 'David Bowie', 'Leonardo Di Caprio'];
 const container = document.getElementById('container');
 const template = document.getElementById('template-post');
-const listOfObjUsers = listOfUsers.map((element, index)=> new Posts(element, index));
+const listOfObjUsers = listOfUsers.map((element, index)=> new Posts(element, index, undefined));
 
 function createPostElement(arrayofObj, container, template){
     const fragment = document.createDocumentFragment();
@@ -43,11 +47,13 @@ function createPostElement(arrayofObj, container, template){
         const postImg = newTemplate.querySelector('.post__image');
         const likeBtn = newTemplate.querySelector('.js-like-button');
         const counter = newTemplate.querySelector('.js-likes-counter');
+        likeBtn.href = `#${element.id}`;
         img.src = element.author.imgProfile;
+        img.alt = getFirstToLetters(element.author.name);
         name.innerText = element.author.name;
         date.innerText = element.date;
         text.innerText = element.postText;
-        postImg.src = element.postPic;
+        postImg.firstElementChild.src = element.postPic;
         element.counter = counter;
         element.likeBtn = likeBtn;
         counter.innerText = element.likes;
@@ -57,6 +63,8 @@ function createPostElement(arrayofObj, container, template){
 }
 
 createPostElement(listOfObjUsers, container, template);
+
+console.log(listOfObjUsers);
 
 
 const posts = document.querySelectorAll('.post');
@@ -82,6 +90,8 @@ const posts = document.querySelectorAll('.post');
 
 
 
+let a = getFirstToLetters('giovanni franchi');
+console.log(a);
 
 
 
